@@ -27,7 +27,8 @@ struct ContentView: View {
                     Spacer()
                     CityPickerView(viewModel: viewModel)
                 }
-                .padding(/*@START_MENU_TOKEN@*/.all, 35.0/*@END_MENU_TOKEN@*/)
+                .padding(/*@START_MENU_TOKEN@*/.vertical, 35.0/*@END_MENU_TOKEN@*/)
+                .padding(.horizontal, 30.0)
                 
                 // Vstack groups the clock and the icon
                 VStack {
