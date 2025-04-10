@@ -14,7 +14,7 @@ struct SunMoonIconView: View {
 
     var body: some View {
         Image(systemName: isNight ? "moon.fill" : "sun.max.fill")
-            .foregroundColor(isNight ? .white : .yellow)
+            .foregroundColor(.yellow)
             .shadow(color: isNight ? .white : .yellow.opacity(0.6), radius: 10, x: 1, y: 1)
             .offset(y: animateIcon ? 0 : 50)
             .opacity(animateIcon ? 1 : 0)
