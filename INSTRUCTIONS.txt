@@ -1,0 +1,57 @@
+# Fibonacci Clock (Time-Zone)
+
+## Requirements
+Create a basic application that displays the following features to the user:
+
+- Analog Clock displaying the current time of your favourite city.
+- City Selector:
+  - Control to select a different city.
+  - Minimum of 2 cities in different time zones.
+  - Clock updates when switching time zones.
+- Day/Night Indicator:
+  - Visual cue indicating whether it's day or night.
+  - You may assume that night is between 6:00 PM and 6:00 AM (Inclusive).
+- Fibonacci-Based Alarm System:
+  - When the app starts (t₀ = start time), an alarm will notify the user.
+  - Alarms are spaced based on the Fibonacci sequence (in hours).
+    - Example: t₁ = 1hr, t₂ = 1hr, t₃ = 2hrs, t₄ = 3hrs, etc.
+- Display how long until the next alarm.
+
+## Design Guidelines 
+- You may choose any framework or technology (e.g., .NET MAUI, Flutter, React, etc.).
+- UI/UX should be clean, minimalistic, and easy to navigate.
+- Write clean, well-organized code following best practices.
+- Use an appropriate design pattern (e.g., MVVM, MVC, etc.) for separation of concerns.
+  - Mention the chosen pattern in the README.
+- Include comments and documentation as needed to explain decisions and logic.
+- Please include a README with:
+  - Any assumptions about the requirements made.
+  - Instructions on how to compile and test your code.
+    
+
+## AI Usage Policy
+We understand that AI tools (e.g., GitHub Copilot, ChatGPT, etc.) are now part of many developers’ toolkits—and that’s perfectly fine. You're welcome to use AI where it makes sense, just as you would in a real-world engineering workflow.
+That said, we ask that you **don’t rely on AI to generate your entire solution**. Why? Because this challenge is intended to assess how *you* think, design, and solve problems. We’re interested in your ability to write maintainable, thoughtful code—AI can assist with that, but it shouldn’t be doing all the heavy lifting.
+We may be able to tell if a submission was fully AI-generated. If we suspect that, we'll follow up with questions to better understand your reasoning and approach. This isn’t a trap—it’s just part of being fair to all candidates and ensuring we’re evaluating actual engineering skills.
+If you *do* use AI to assist with any part of the work (e.g., generating a regex, reformatting a function, or clarifying a library usage), that’s totally fine—just note it in your README. Transparency is appreciated.
+
+In short:  
+**Use AI as a tool, not a crutch. Show us how *you* think.**
+
+
+## Contact
+If you encounter any ambiguities or edge cases during the assignment, you're encouraged to make reasonable assumptions—as long as you clearly document them in your submission `README`. This helps us understand your decision-making process and mirrors how you'd operate in a real-world engineering environment. There is no "perfect" answer and we are more interested in how you reason through uncertainty.
+That said, if you're truly blocked or need critical clarification, feel free to reach out:
+ 
+**Caleb Tong**
+[ctong@tenzrhealth.com]
+
+Please make sure to CC **Karan Sachdev**
+[ksachdev@tenzrhealth.com]
+
+
+# Submission Guidelines
+To submit your assignment, please compress your project into a ZIP file and attach it to an email addressed to us.
+
+
+We're excited to see your solution. Best of luck!
