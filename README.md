@@ -178,3 +178,8 @@ The app will launch on your selected device or simulator
 </p>
 
 
+### Testing the Alarm
+
+- To test the alarm, the `Logger.swift` file was written to write to a file, everytime the alarm would be triggered, printing the time and date with the corresponding fibonacci number. This function would be called twice on app startup, but it was not an issue with the functionality of the application. I did not have time to fix this or run it for long enough, and the code that calls the Logger is commented out in `triggerAlarm()` in the `ClockViewModel.swift` file. This was an attempt to test the fibonacci alarm works properly with the actual time.
+
+
