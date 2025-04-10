@@ -8,6 +8,11 @@
 
 import SwiftUI
 
+
+// This view uses a dropdown menu and allows the user to
+// select a city from a list of cities
+// The selected city will be used to update the time and alarms
+
 struct CityPickerView: View {
     @ObservedObject var viewModel: ClockViewModel
 

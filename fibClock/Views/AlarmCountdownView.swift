@@ -8,6 +8,8 @@
 
 import SwiftUI
 
+// This view displays the countdown to the next alarm
+// It takes a string parameter for the time until the next alarm
 struct AlarmCountdownView: View {
     let timeUntilNextAlarm: String
 

@@ -10,14 +10,17 @@ import SwiftUI
 struct ContentView: View {
     
     @StateObject private var viewModel = ClockViewModel()
-    @State private var animateIcon = true
     
     var body: some View {
         ZStack {
             Color("BackgroundColor").edgesIgnoringSafeArea(.all)
             
+            // Stacking all elements together
             VStack {
+                
+                // Header - Stacking the city name and the city picker
                 HStack(alignment: .center) {
+                    // City name
                     Text("\(viewModel.selectedCity.name)")
                         .font(Font.custom("OPTIDanley-Medium", size: 32))
                         .fontWeight(.bold)
@@ -26,15 +29,15 @@ struct ContentView: View {
                 }
                 .padding(/*@START_MENU_TOKEN@*/.all, 35.0/*@END_MENU_TOKEN@*/)
                 
-                // Vstack so the icon is not spaced apart to the clock
+                // Vstack groups the clock and the icon
                 VStack {
                     // Display the Sun and Moon icon
-                    // on either side of the clock
+                    // on either side of the clock by checking the isNight value
+                    // and showing the Spacer() on the left and right accordingly
                     HStack {
                         if viewModel.isNight {
                             Spacer()
                         }
-                        // Icon
                         SunMoonIconView(isNight: viewModel.isNight, animateIcon: $viewModel.animateIcon)
                         if !viewModel.isNight {
                             Spacer()
@@ -49,6 +52,7 @@ struct ContentView: View {
                 // Current date
                 CurrentDateView(currentTime: viewModel.currentTime).padding(.top, 40)
                     
+                // Stacks the alarm countdown and text together in a card
                 VStack{
                     // Display alarm countdown
                     Text("Next Alarm")
@@ -81,7 +85,9 @@ struct ContentView: View {
                     }
                 }
         .preferredColorScheme(viewModel.isNight ? .dark : .light)
+        // Animate the entire transition between light and dark mode
         .animation(.easeInOut(duration: 0.3), value: viewModel.isNight)
+        // Listens to the changes in the isNight property to toggle the icon animation
         .onChange(of: viewModel.isNight) { oldVal, _ in
                     viewModel.toggleIconAnimation()
                 }

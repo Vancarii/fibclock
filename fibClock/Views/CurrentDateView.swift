@@ -8,6 +8,10 @@
 
 import SwiftUI
 
+// This view displays the current date in a specific format
+// This is added on top of the app requirements so that the user
+// can see if the selected city is ahead of behind
+
 struct CurrentDateView: View {
     let currentTime: Date
 

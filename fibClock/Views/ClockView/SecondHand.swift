@@ -8,6 +8,9 @@
 
 import SwiftUI
 
+// This struct defines the second hand of the clock
+// It uses the current time to calculate the angle of the second hand
+
 struct SecondHand: Shape {
     let currentTime: Date
     
@@ -16,8 +19,6 @@ struct SecondHand: Shape {
         let center = CGPoint(x: rect.midX, y: rect.midY)
         
         let second = Calendar.current.component(.second, from: currentTime)
-        
-        // Each second is 6 degree
         let angle = Angle.degrees(Double(second) * 6)
         
         path.move(to: center)

@@ -8,6 +8,8 @@
 
 import SwiftUI
 
+// This view displays a sun or moon icon based on the time of day
+
 struct SunMoonIconView: View {
     let isNight: Bool
     @Binding var animateIcon: Bool
@@ -19,11 +21,5 @@ struct SunMoonIconView: View {
             .offset(y: animateIcon ? 0 : 50)
             .opacity(animateIcon ? 1 : 0)
             .font(.largeTitle)
-//            .onChange(of: isNight) { oldValue, newValue in
-//                animateIcon = false
-//                withAnimation(.easeInOut(duration: 0.7)) {
-//                    animateIcon = true
-//                }
-//            }
     }
 }

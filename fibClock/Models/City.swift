@@ -14,5 +14,15 @@ struct City: Identifiable, Equatable, Hashable {
     let timeZoneIdentifier: String
 }
     
+// List of available cities
+struct CityManager {
+    static let cities: [City] = [
+        City(name: "Vancouver", timeZoneIdentifier: "America/Vancouver"),
+        City(name: "Singapore", timeZoneIdentifier: "Asia/Singapore"),
+        City(name: "London", timeZoneIdentifier: "Europe/London"),
+        City(name: "Seoul", timeZoneIdentifier: "Asia/Seoul"),
+        City(name: "Christchurch", timeZoneIdentifier: "Pacific/Auckland"),
+    ]
+}
     
     

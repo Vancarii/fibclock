@@ -18,15 +18,8 @@ class ClockViewModel: ObservableObject {
     @Published var showAlarmAlert = false
     @Published var animateIcon: Bool = true
     
-    let cities: [City] = [
-        City(name: "Vancouver", timeZoneIdentifier: "America/Vancouver"),
-        City(name: "Singapore", timeZoneIdentifier: "Asia/Singapore"),
-        City(name: "London", timeZoneIdentifier: "Europe/London"),
-        City(name: "Seoul", timeZoneIdentifier: "Asia/Seoul"),
-        City(name: "Christchurch", timeZoneIdentifier: "Pacific/Auckland"),
-    ]
+    let cities = CityManager.cities
     
-    private var cancellables = Set<AnyCancellable>()
     private let fibonacciManager = FibonacciAlarmManager()
     private var alarmStartTime: Date
     private var nextAlarmIndex: Int = 0
@@ -36,11 +29,7 @@ class ClockViewModel: ObservableObject {
     init() {
         // Default city is Vancouver
         self.selectedCity = cities[0]
-        
-        // Capture the app start time (t₀)
         self.alarmStartTime = Date()
-        
-        // Calculate the first alarm
         self.nextAlarmTime = alarmStartTime
     
         startClockUpdates()
@@ -48,6 +37,8 @@ class ClockViewModel: ObservableObject {
         updateTimeUntilNextAlarm()
     }
     
+    // Toggles the animation for the icon
+    // when the city changes and is in a different timezone
     func toggleIconAnimation() {
         self.animateIcon = false
 
@@ -59,14 +50,15 @@ class ClockViewModel: ObservableObject {
     }
     
 
-    // Change the selected city
+    // Change the selected city and
+    // update the current time and day/night status
     func selectCity(_ city: City) {
         self.selectedCity = city
         self.currentTime = localizedCurrentTime(for: city.timeZoneIdentifier)
         updateDayNightStatus()
     }
 
-    //
+    // Get the current time in the selected city's timezone
     private func localizedCurrentTime(for timeZoneID: String) -> Date {
         guard let timeZone = TimeZone(identifier: timeZoneID) else { return Date() }
         let systemOffset = TimeZone.current.secondsFromGMT(for: Date())
@@ -74,6 +66,7 @@ class ClockViewModel: ObservableObject {
         let delta = TimeInterval(targetOffset - systemOffset)
         return Date().addingTimeInterval(delta)
     }
+    
     
     private func startClockUpdates() {
         clockTimer = Timer.publish(every: 1, on: .main, in: .common)
@@ -94,7 +87,8 @@ class ClockViewModel: ObservableObject {
             }
     }
 
-    
+    // Updates the day and night status based on the current time
+    // based on the hour, it toggles the isNight property
     private func updateDayNightStatus() {
         guard let timeZone = TimeZone(identifier: selectedCity.timeZoneIdentifier) else { return }
         let components = Calendar.current.dateComponents(in: timeZone, from: currentTime)
@@ -112,19 +106,30 @@ class ClockViewModel: ObservableObject {
             isNight = false
         }
     }
-
+    
+    // This is called when the alarm timer reaches 0
+    // It shows the alert dialog and plays the alarm sound
+    // sets the next alarm time based on the Fibonacci sequence
+    // Optional: calles the Logger to log the events/alarms
     private func triggerAlarm() {
+        let fibonacciNumber = fibonacciManager.hours(for: nextAlarmIndex)
         nextAlarmIndex += 1
         
         // Set the next alarm time
         nextAlarmTime = Calendar.current.date(byAdding: .hour,
-                                              value: fibonacciManager.hours(for: nextAlarmIndex),
+                                              value: fibonacciNumber,
                                               to: alarmStartTime) ?? Date()
         
         showAlarmAlert = true
         playAlarmSound()
+        
+        // ENABLE THIS FOR TESTING
+        // Logger.logAlarmEvent(fibonacciNumber: fibonacciNumber)
     }
     
+    
+    // THis is called by the triggerAlarm function and uses AVAudioPlayer to play the contents
+    // of the iphone_alarm.mp3 file
     private func playAlarmSound() {
             guard let url = Bundle.main.url(forResource: "iphone_alarm", withExtension: "mp3") else {
                 print("Alarm sound file not found.")
@@ -139,13 +144,16 @@ class ClockViewModel: ObservableObject {
             }
         }
     
+    // This is called when the alarm alert dialog is dismissed
+    // It stops the audio player and hides the alert
     func dismissAlarm() {
         audioPlayer?.stop()
         showAlarmAlert = false
     }
     
     
-    
+    // This function calculates the time remaining until the next alarm
+    // and is used in AlarmCountdownView.swift to display the countdown
     private func updateTimeUntilNextAlarm() {
         let interval = nextAlarmTime.timeIntervalSince(Date())
         

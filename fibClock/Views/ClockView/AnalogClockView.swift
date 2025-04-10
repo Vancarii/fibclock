@@ -7,6 +7,10 @@
 
 import SwiftUI
 
+// This view displays an analog clock with hour, minute, and second hands
+// It uses a GeometryReader to adjust the size and position of the clock hands
+// The clock hands are drawn using custom shapes for hour, minute, and second hands
+
 struct AnalogClockView: View {
     let currentTime: Date
     let isNight: Bool
@@ -15,6 +19,7 @@ struct AnalogClockView: View {
         GeometryReader { geometry in
             ZStack {
                 
+                // Background Circle
                 Circle()
                     .fill(Color("ClockColor"))
                     .shadow(color: .black.opacity(0.2),

@@ -8,6 +8,10 @@
 
 import SwiftUI
 
+// This struct defines the minute hand of the clock
+// It uses a path to draw the hand based on the current time
+// same as the hour hand, but the angle is calculated differently
+
 struct MinuteHand: Shape {
     let currentTime: Date
     
@@ -16,8 +20,6 @@ struct MinuteHand: Shape {
         let center = CGPoint(x: rect.midX, y: rect.midY)
         
         let minute = Calendar.current.component(.minute, from: currentTime)
-        
-        // Each minute is 6°
         let angle = Angle.degrees(Double(minute) * 6)
         
         path.move(to: center)
