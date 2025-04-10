@@ -7,6 +7,7 @@
 
 import SwiftUI
 import Combine
+import AVFoundation
 
 class ClockViewModel: ObservableObject {
     @Published var selectedCity: City
@@ -14,12 +15,14 @@ class ClockViewModel: ObservableObject {
     @Published var isNight: Bool = false
     @Published var nextAlarmTime: Date
     @Published var timeUntilNextAlarm: String = ""
+    @Published var showAlarmAlert = false
+    @Published var animateIcon: Bool = true
     
     let cities: [City] = [
         City(name: "Vancouver", timeZoneIdentifier: "America/Vancouver"),
         City(name: "Singapore", timeZoneIdentifier: "Asia/Singapore"),
         City(name: "London", timeZoneIdentifier: "Europe/London"),
-        City(name: "Tokyo", timeZoneIdentifier: "Asia/Tokyo"),
+        City(name: "Seoul", timeZoneIdentifier: "Asia/Seoul"),
         City(name: "Christchurch", timeZoneIdentifier: "Pacific/Auckland"),
     ]
     
@@ -28,6 +31,7 @@ class ClockViewModel: ObservableObject {
     private var alarmStartTime: Date
     private var nextAlarmIndex: Int = 0
     private var clockTimer: AnyCancellable?
+    private var audioPlayer: AVAudioPlayer?
     
     init() {
         // Default city is Vancouver
@@ -36,31 +40,33 @@ class ClockViewModel: ObservableObject {
         // Capture the app start time (t₀)
         self.alarmStartTime = Date()
         
-        // Calculate the first alarm (Fibonacci hour = 1 for index 0)
-        self.nextAlarmTime = Calendar.current.date(byAdding: .hour,
-                                                   value: fibonacciManager.hours(for: nextAlarmIndex),
-                                                   to: alarmStartTime) ?? Date()
-        
-        // Start the clock updates
+        // Calculate the first alarm
+        self.nextAlarmTime = alarmStartTime
+    
         startClockUpdates()
-        
-        // Update initial state
         updateDayNightStatus()
         updateTimeUntilNextAlarm()
     }
     
-    // MARK: - City Selection
-    
-    func selectCity(_ city: City) {
-        self.selectedCity = city
-        // Force an immediate time update to reflect the new time zone
-        self.currentTime = localizedCurrentTime(for: city.timeZoneIdentifier)
-        // Also recalculate night status for the newly selected city
-        updateDayNightStatus()
+    func toggleIconAnimation() {
+        self.animateIcon = false
+
+        DispatchQueue.main.asyncAfter(deadline: .now() + 0.3) {
+            withAnimation(.easeInOut(duration: 0.7)) {
+                self.animateIcon = true
+            }
+        }
     }
     
-    // MARK: - Time
-    
+
+    // Change the selected city
+    func selectCity(_ city: City) {
+        self.selectedCity = city
+        self.currentTime = localizedCurrentTime(for: city.timeZoneIdentifier)
+        updateDayNightStatus()
+    }
+
+    //
     private func localizedCurrentTime(for timeZoneID: String) -> Date {
         guard let timeZone = TimeZone(identifier: timeZoneID) else { return Date() }
         let systemOffset = TimeZone.current.secondsFromGMT(for: Date())
@@ -78,41 +84,35 @@ class ClockViewModel: ObservableObject {
                 // Update current time for the chosen time zone
                 self.currentTime = self.localizedCurrentTime(for: self.selectedCity.timeZoneIdentifier)
                 
-                // Update day/night status
                 self.updateDayNightStatus()
                 
-                // Check if an alarm has occurred
                 if Date() >= self.nextAlarmTime {
                     self.triggerAlarm()
                 }
-                
-                // Update the UI display for next alarm
+
                 self.updateTimeUntilNextAlarm()
             }
     }
-    
-    // MARK: - Day/Night
+
     
     private func updateDayNightStatus() {
         guard let timeZone = TimeZone(identifier: selectedCity.timeZoneIdentifier) else { return }
         let components = Calendar.current.dateComponents(in: timeZone, from: currentTime)
         
-        // If we can't get the hour, default to day
+        // default to day
         guard let hour = components.hour else {
             self.isNight = false
             return
         }
         
-        // Night = 6 PM (18) to 6 AM (6). We'll include 6 PM to 11:59 PM and 0 to 6 AM
+        // Night = 6 PM (18) to 6 AM (6).
         if hour >= 18 || hour < 6 {
             isNight = true
         } else {
             isNight = false
         }
     }
-    
-    // MARK: - Alarms
-    
+
     private func triggerAlarm() {
         // Alarm occurred — schedule the next one
         nextAlarmIndex += 1
@@ -122,15 +122,15 @@ class ClockViewModel: ObservableObject {
                                               value: fibonacciManager.hours(for: nextAlarmIndex),
                                               to: alarmStartTime) ?? Date()
         
-        // Here you might show a local notification or an alert
-        print("Alarm triggered! Next alarm at \(nextAlarmTime)")
+        showAlarmAlert = true
     }
+    
     
     private func updateTimeUntilNextAlarm() {
         let interval = nextAlarmTime.timeIntervalSince(Date())
         
         if interval <= 0 {
-            timeUntilNextAlarm = "Alarm due now!"
+            timeUntilNextAlarm = "Time's up!"
         } else {
             let totalSeconds = Int(interval)
             let hours = totalSeconds / 3600

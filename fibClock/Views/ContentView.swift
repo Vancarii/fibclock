@@ -17,20 +17,15 @@ struct ContentView: View {
             Color("BackgroundColor").edgesIgnoringSafeArea(.all)
             
             VStack {
-                
-                
                 HStack(alignment: .center) {
                     Text("\(viewModel.selectedCity.name)")
                         .font(Font.custom("OPTIDanley-Medium", size: 32))
                         .fontWeight(.bold)
-                    
-                Spacer()
-                    
-                    cityPicker().fontWeight(.bold).font(.footnote)
+                    Spacer()
+                    CityPickerView(viewModel: viewModel)
                 }
                 .padding(/*@START_MENU_TOKEN@*/.all, 35.0/*@END_MENU_TOKEN@*/)
-                    
-                    
+                
                 // Vstack so the icon is not spaced apart to the clock
                 VStack {
                     // Display the Sun and Moon icon
@@ -39,89 +34,58 @@ struct ContentView: View {
                         if viewModel.isNight {
                             Spacer()
                         }
-                        sunMoonIcon
-                            .font(.largeTitle)
+                        // Icon
+                        SunMoonIconView(isNight: viewModel.isNight, animateIcon: $viewModel.animateIcon)
                         if !viewModel.isNight {
                             Spacer()
                         }
                     }
                     .padding(.horizontal, 50)
-                            
+                    
                     // Analog Clock
                     AnalogClockView(currentTime: viewModel.currentTime, isNight: viewModel.isNight).frame(width: 200, height: 200)
                 }
                 
                 // Current date
-                currentDateText.padding(.top, 40.0)
+                CurrentDateView(currentTime: viewModel.currentTime).padding(.top, 40)
                     
-                
                 VStack{
                     // Display alarm countdown
-                    Label("Next Alarm", systemImage: "light.beacon.min.fill")
+                    Text("Next Alarm")
                         .padding(.all)
                         .padding(.horizontal, 30.0)
-                        .font(Font.custom("OPTIDanley-Medium", size: 32))
+                        .font(Font.custom("OPTIDanley-Medium", size: 22))
+                        .foregroundColor(.accentColor)
+                    
+                    Divider()
+                        .padding(.horizontal, 20)
+                        .frame(width: 250.0)
                         
-                        
+                    
+                    // Countdown timer
                     Text("\(viewModel.timeUntilNextAlarm)")
-                        .font(Font.custom("OPTIDanley-Medium", size: 26))
-                        .padding(.all)
+                        .font(Font.custom("OPTIDanley-Medium", size: 28))
+                        .padding([.leading, .bottom, .trailing], 35.0)
+                        .foregroundColor(.black)
                 }
-                .background(Color("BackgroundColor").opacity(0.6))
+                .background(Color("ClockColor"))
                 .cornerRadius(15)
                 .padding(.top, 50.0)
                 .shadow(color: .gray.opacity(0.5), radius: 5, x: 5, y: 5)
                 
             }
         }
-        .preferredColorScheme(viewModel.isNight ? .dark : .light)
-    }
-    
-        
-    private func cityPicker() -> some View {
-        Menu {
-            ForEach(viewModel.cities) { city in
-                Button(action: {
-                    viewModel.selectCity(city)
-                }) {
-                    Text(city.name)
+        .alert("Alarm", isPresented: $viewModel.showAlarmAlert) {
+                    Button("Dismiss", role: .cancel) {
+                    }
                 }
-            }
-        } label: {
-            Label("Select City", systemImage: "location")
-                .font(Font.custom("OPTIDanley-Medium", size: 16))
-                .fontWeight(.bold)
-                .padding(8.0)
-                .background(Color.white.opacity(0.8)).cornerRadius(10)
-                .shadow(color: viewModel.isNight ? .white : .gray.opacity(0.4), radius: 5, x: 5, y: 5)
-        }
+        .preferredColorScheme(viewModel.isNight ? .dark : .light)
+        .animation(.easeInOut(duration: 0.3), value: viewModel.isNight)
+        .onChange(of: viewModel.isNight) { oldVal, _ in
+                    viewModel.toggleIconAnimation()
+                }
     }
     
-    private var currentDateText: some View {
-        let dateFormatter = DateFormatter()
-        dateFormatter.dateStyle = .long
-        dateFormatter.timeStyle = .none
-        
-        return Text(dateFormatter.string(from: viewModel.currentTime))
-            .font(Font.custom("OPTIDanley-Medium", size: 20))
-            .padding(.top, 10)
-    }
-       
-   private var sunMoonIcon: some View {
-       Image(systemName: viewModel.isNight ? "moon.fill" : "sun.max.fill")
-           .foregroundColor(viewModel.isNight ? .white : .yellow)
-           .shadow(color: viewModel.isNight ? .white : .yellow.opacity(0.6), radius: 10, x: 1, y: 1)
-           .offset(y: animateIcon ? 0 : 50)
-           .opacity(animateIcon ? 1 : 0)
-           .onChange(of: viewModel.isNight) { oldValue, newValue in
-               
-               animateIcon = false
-               
-               withAnimation(.easeInOut(duration: 0.7)) {
-                   animateIcon = true
-               }
-           }
-   }
 }
 
 #Preview {

@@ -17,7 +17,7 @@ struct SecondHand: Shape {
         
         let second = Calendar.current.component(.second, from: currentTime)
         
-        // Each second is 6°
+        // Each second is 6 degree
         let angle = Angle.degrees(Double(second) * 6)
         
         path.move(to: center)

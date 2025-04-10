@@ -7,6 +7,7 @@
 
 import Foundation
 
+// Calculates the Fibonacci number and returns next alarm time
 struct FibonacciAlarmManager {
     
     func hours(for index: Int) -> Int {
