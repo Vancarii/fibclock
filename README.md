@@ -178,7 +178,3 @@ The app will launch on your selected device or simulator
 </p>
 
 
----
-
-## License
-This project is licensed under the MIT License. See the `LICENSE` file for details.
