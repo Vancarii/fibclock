@@ -8,7 +8,6 @@
 import Foundation
 
 // Refactered this to use DP instead of looping to index everytime
-// Its less computational expensive, but more storage is used
 
 struct FibonacciAlarmManager {
     private var memo: [Int: Int] = [0: 0, 1: 1]
