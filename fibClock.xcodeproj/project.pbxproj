@@ -6,6 +6,10 @@
 	objectVersion = 77;
 	objects = {
 
+/* Begin PBXBuildFile section */
+		C1D218E52DA7620300327609 /* README.md in Resources */ = {isa = PBXBuildFile; fileRef = C1D218E42DA7620300327609 /* README.md */; };
+/* End PBXBuildFile section */
+
 /* Begin PBXContainerItemProxy section */
 		C12B1C762DA71A950095A5BC /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
@@ -27,6 +31,7 @@
 		C12B1C652DA71A940095A5BC /* fibClock.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = fibClock.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		C12B1C752DA71A950095A5BC /* fibClockTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = fibClockTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		C12B1C7F2DA71A950095A5BC /* fibClockUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = fibClockUITests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
+		C1D218E42DA7620300327609 /* README.md */ = {isa = PBXFileReference; lastKnownFileType = net.daringfireball.markdown; path = README.md; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFileSystemSynchronizedBuildFileExceptionSet section */
@@ -92,6 +97,7 @@
 				C12B1C782DA71A950095A5BC /* fibClockTests */,
 				C12B1C822DA71A950095A5BC /* fibClockUITests */,
 				C12B1C662DA71A940095A5BC /* Products */,
+				C1D218E42DA7620300327609 /* README.md */,
 			);
 			sourceTree = "<group>";
 		};
@@ -225,6 +231,7 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				C1D218E52DA7620300327609 /* README.md in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
