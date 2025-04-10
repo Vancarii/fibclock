@@ -105,8 +105,8 @@ class ClockViewModel: ObservableObject {
             return
         }
         
-        // Night = 6 PM (18) to 6 AM (6).
-        if hour >= 18 || hour < 6 {
+        // Night = 6 PM (18) to 6 AM (6) inclusive
+        if hour >= 18 || hour <= 6 {
             isNight = true
         } else {
             isNight = false
@@ -114,7 +114,6 @@ class ClockViewModel: ObservableObject {
     }
 
     private func triggerAlarm() {
-        // Alarm occurred — schedule the next one
         nextAlarmIndex += 1
         
         // Set the next alarm time
@@ -123,7 +122,28 @@ class ClockViewModel: ObservableObject {
                                               to: alarmStartTime) ?? Date()
         
         showAlarmAlert = true
+        playAlarmSound()
     }
+    
+    private func playAlarmSound() {
+            guard let url = Bundle.main.url(forResource: "iphone_alarm", withExtension: "mp3") else {
+                print("Alarm sound file not found.")
+                return
+            }
+            do {
+                audioPlayer = try AVAudioPlayer(contentsOf: url)
+                audioPlayer?.numberOfLoops = -1
+                audioPlayer?.play()
+            } catch {
+                print("Failed to play alarm sound: \(error)")
+            }
+        }
+    
+    func dismissAlarm() {
+        audioPlayer?.stop()
+        showAlarmAlert = false
+    }
+    
     
     
     private func updateTimeUntilNextAlarm() {

@@ -77,6 +77,7 @@ struct ContentView: View {
         }
         .alert("Alarm", isPresented: $viewModel.showAlarmAlert) {
                     Button("Dismiss", role: .cancel) {
+                        viewModel.dismissAlarm()
                     }
                 }
         .preferredColorScheme(viewModel.isNight ? .dark : .light)
