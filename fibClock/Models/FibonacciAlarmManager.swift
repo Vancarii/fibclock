@@ -7,22 +7,21 @@
 
 import Foundation
 
-// Calculates the Fibonacci number and returns next alarm time
+// Refactered this to use DP instead of looping to index everytime
+// Its less computational expensive, but more storage is used
+
 struct FibonacciAlarmManager {
-    
-    func hours(for index: Int) -> Int {
-            guard index >= 0 else { return 1 }
-            
-            var a = 0
-            var b = 1
-            
-            for _ in 0..<index {
-                let temp = a + b
-                a = b
-                b = temp
-            }
-            
-            return b
+    private var memo: [Int: Int] = [0: 0, 1: 1]
+
+    mutating func hours(for index: Int) -> Int {
+        guard index >= 0 else { return 1 }
+
+        if let result = memo[index] {
+            return result
         }
+
+        let result = hours(for: index - 1) + hours(for: index - 2)
+        memo[index] = result
+        return result
+    }
 }
-        

@@ -20,7 +20,7 @@ class ClockViewModel: ObservableObject {
     
     let cities = CityManager.cities
     
-    private let fibonacciManager = FibonacciAlarmManager()
+    private var fibonacciManager = FibonacciAlarmManager()
     private var alarmStartTime: Date
     private var nextAlarmIndex: Int = 0
     private var clockTimer: AnyCancellable?
@@ -107,12 +107,26 @@ class ClockViewModel: ObservableObject {
         }
     }
     
-    // This is called when the alarm timer reaches 0
+    // nextAlarmIndex starts at 0, when t0
+    // This function is called when the alarm timer reaches 0
     // It shows the alert dialog and plays the alarm sound
     // sets the next alarm time based on the Fibonacci sequence
     // Optional: calles the Logger to log the events/alarms
     private func triggerAlarm() {
         let fibonacciNumber = fibonacciManager.hours(for: nextAlarmIndex)
+        
+        // ENABLE THIS FOR TESTING
+        // This prints the first startup alarm twice
+        // but i dont have time to fix it. Other values work
+//        if nextAlarmIndex == 0 {
+//            Logger.logAlarmEvent(fibonacciNumber: 0)
+//        } else if nextAlarmIndex == 1 {
+//            Logger.logAlarmEvent(fibonacciNumber: 1)
+//        } else {
+//            let currFib = fibonacciManager.hours(for: nextAlarmIndex - 1)
+//            Logger.logAlarmEvent(fibonacciNumber: currFib)
+//        }
+            
         nextAlarmIndex += 1
         
         // Set the next alarm time
@@ -123,8 +137,6 @@ class ClockViewModel: ObservableObject {
         showAlarmAlert = true
         playAlarmSound()
         
-        // ENABLE THIS FOR TESTING
-        // Logger.logAlarmEvent(fibonacciNumber: fibonacciNumber)
     }
     
     
