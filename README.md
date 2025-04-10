@@ -50,7 +50,7 @@ The project follows the **MVVM (Model-View-ViewModel)** design pattern:
 ---
 
 ## Assumptions
-1. It is assumed that the fibonacci function is infinite as long as the app is running, meaning it will continue to produce the next fibonacci number
+1. It is assumed that the fibonacci function is infinite as long as the app is running, meaning it will continue to produce the next fibonacci number. Given this, i chose to use memoization to store only the previous 2 fibonacci numbers to optimize time and space complexity.
 2. Given a minimum of 2 cities in different time zones, it is assumed that it is not needed to implement adding new cities to the list
 3. The alarm plays an mp3 alarm sound and shows an alert, similar to the alarm on mobile devices
 4. A date is included to be more specific if the current city selected is ahead or behind
@@ -92,7 +92,7 @@ fibClock/
 1. **Models**:
    - `City`: Represents a city with a name, id, and time zone. Includes a struct for the list of selectable Cities
    - `Alarm`: Represents an alarm with a scheduled time
-   - `FibonacciAlarmManager`: Calculates Fibonacci numbers for alarm scheduling and returns the next value
+   - `FibonacciAlarmManager`: Calculates Fibonacci numbers using memoization for alarm scheduling and returns the next value
 
 2. **ViewModel**:
    - `ClockViewModel`: Manages the app's state, including the current time, selected city, alarm scheduling, day/night mode, and animations.
